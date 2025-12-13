@@ -1,4 +1,4 @@
-FROM 728642754198.dkr.ecr.eu-central-1.amazonaws.com/dxl-ie:ga-open-11-jre-quarkus-1.0.0-a
+FROM openjdk:11-jre-slim
 
 RUN mkdir /deployments
 ENV KEYSTORE_PATH /deployments/ssl/keystore.jks
