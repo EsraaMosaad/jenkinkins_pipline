@@ -34,3 +34,5 @@ hs_err_pid*
 .project
 *.settings
 /bin/
+config.bat
+node_modules

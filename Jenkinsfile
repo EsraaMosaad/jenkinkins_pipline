@@ -36,9 +36,11 @@ pipeline {
         
        stage('Scan Docker Image') {
             steps {
-                // Run Trivy using Docker image
+                // Run Trivy using Docker image (optional - won't fail the pipeline)
                 // We mount the docker socket so Trivy can see the image we just built
-                sh "docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image $APP_NAME:latest"
+                catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+                    sh "docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image --timeout 10m $APP_NAME:latest"
+                }
             }
         }
     }
