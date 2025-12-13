@@ -1,21 +1,7 @@
 FROM openjdk:11-jre-slim
 
-RUN mkdir /deployments
-ENV KEYSTORE_PATH /deployments/ssl/keystore.jks
+WORKDIR /app
 
-WORKDIR /deployments
+COPY target/my-app-1.0-SNAPSHOT.jar /app/app.jar
 
-
-RUN groupadd -r vfuser && useradd -r -s /bin/false -g vfuser vfuser
-
-COPY service/target/quarkus-app/lib/ /deployments/lib/
-COPY service/target/quarkus-app/*.jar /deployments/
-COPY service/target/quarkus-app/app/ /deployments/app/
-COPY service/target/quarkus-app/quarkus/ /deployments/quarkus/
-
-RUN chown -R vfuser:vfuser /deployments
-USER vfuser
-
-EXPOSE 8080
-
-ENTRYPOINT exec java $JAVA_OPTS -Djavax.net.ssl.keyStore=${KEYSTORE_PATH} -Djavax.net.ssl.keyStorePassword=${keystorePass} -jar ./quarkus-run.jar -Dquarkus.http.host=0.0.0.0
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
